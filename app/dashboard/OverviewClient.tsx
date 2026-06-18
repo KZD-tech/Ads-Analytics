@@ -41,6 +41,12 @@ export default async function OverviewClient({
     getLastSync(),
   ]);
 
+  console.log("[dashboard/overview] Data loaded:", {
+    campaignsCount: campaigns.length,
+    prevCampaignsCount: prevCampaigns.length,
+    hasLastSync: !!lastSync,
+  });
+
   const totals = getCampaignAggregates(campaigns);
   const prevTotals = getCampaignAggregates(prevCampaigns);
   const dailyData = aggregateDailyData(campaigns, from, to);
