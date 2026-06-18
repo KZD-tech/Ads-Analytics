@@ -6,12 +6,11 @@ import OverviewClient from "./OverviewClient";
 export default async function DashboardPage({
   searchParams,
 }: {
-  searchParams: Promise<{ from?: string; to?: string }>;
+  searchParams: { from?: string; to?: string };
 }) {
-  const sp = await searchParams;
   const defaultRange = getDefaultDateRange(30);
-  const from = sp.from || defaultRange.from;
-  const to = sp.to || defaultRange.to;
+  const from = searchParams.from || defaultRange.from;
+  const to = searchParams.to || defaultRange.to;
 
   // Previous 7 days for comparison
   const prevFrom = format(subDays(new Date(from), 7), "yyyy-MM-dd");

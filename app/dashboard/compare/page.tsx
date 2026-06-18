@@ -11,12 +11,11 @@ import clsx from "clsx";
 export default async function ComparePage({
   searchParams,
 }: {
-  searchParams: Promise<{ from?: string; to?: string }>;
+  searchParams: { from?: string; to?: string };
 }) {
-  const sp = await searchParams;
   const defaultRange = getDefaultDateRange(30);
-  const from = sp.from || defaultRange.from;
-  const to = sp.to || defaultRange.to;
+  const from = searchParams.from || defaultRange.from;
+  const to = searchParams.to || defaultRange.to;
 
   const [metaCampaigns, googleCampaigns] = await Promise.all([
     getCampaignsWithMetrics(from, to, "meta"),

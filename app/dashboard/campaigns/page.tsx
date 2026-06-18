@@ -6,19 +6,18 @@ import CampaignFilters from "./CampaignFilters";
 export default async function CampaignsPage({
   searchParams,
 }: {
-  searchParams: Promise<{
+  searchParams: {
     from?: string;
     to?: string;
     platform?: string;
     status?: string;
-  }>;
+  };
 }) {
-  const sp = await searchParams;
   const defaultRange = getDefaultDateRange(30);
-  const from = sp.from || defaultRange.from;
-  const to = sp.to || defaultRange.to;
-  const platform = sp.platform as "meta" | "google" | undefined;
-  const status = sp.status as "active" | "paused" | "archived" | undefined;
+  const from = searchParams.from || defaultRange.from;
+  const to = searchParams.to || defaultRange.to;
+  const platform = searchParams.platform as "meta" | "google" | undefined;
+  const status = searchParams.status as "active" | "paused" | "archived" | undefined;
 
   const campaigns = await getCampaignsWithMetrics(from, to, platform);
   let rows = buildCampaignRows(campaigns);

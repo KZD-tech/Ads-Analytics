@@ -12,14 +12,13 @@ export default async function CampaignDetailPage({
   params,
   searchParams,
 }: {
-  params: Promise<{ id: string }>;
-  searchParams: Promise<{ from?: string; to?: string }>;
+  params: { id: string };
+  searchParams: { from?: string; to?: string };
 }) {
-  const { id } = await params;
-  const sp = await searchParams;
+  const { id } = params;
   const defaultRange = getDefaultDateRange(30);
-  const from = sp.from || defaultRange.from;
-  const to = sp.to || defaultRange.to;
+  const from = searchParams.from || defaultRange.from;
+  const to = searchParams.to || defaultRange.to;
 
   const campaign = await getCampaignDetail(id, from, to);
 
