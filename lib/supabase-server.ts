@@ -1,5 +1,6 @@
 import { createServerClient as createSSRClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { getRequiredEnv } from "@/lib/env-check";
 
 /**
  * Supabase client for Server Components, Route Handlers, and Server Actions.
@@ -8,8 +9,8 @@ import { cookies } from "next/headers";
 export async function createServerClient() {
   const cookieStore = await cookies();
   return createSSRClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    getRequiredEnv("NEXT_PUBLIC_SUPABASE_URL"),
+    getRequiredEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY"),
     {
       cookies: {
         getAll() {
@@ -39,8 +40,8 @@ import { createClient as createServiceClient } from "@supabase/supabase-js";
  */
 export function createServiceRoleClient() {
   return createServiceClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    getRequiredEnv("NEXT_PUBLIC_SUPABASE_URL"),
+    getRequiredEnv("SUPABASE_SERVICE_ROLE_KEY"),
     { auth: { persistSession: false } },
   );
 }
