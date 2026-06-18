@@ -1,6 +1,6 @@
 import { getCampaignsWithMetrics, getDefaultDateRange } from "@/lib/dashboard-data";
-import { buildCampaignRows } from "@/components/dashboard/CampaignTable";
 import CampaignTable from "@/components/dashboard/CampaignTable";
+import { buildCampaignRows } from "@/lib/campaign-utils";
 import CampaignFilters from "./CampaignFilters";
 
 export default async function CampaignsPage({

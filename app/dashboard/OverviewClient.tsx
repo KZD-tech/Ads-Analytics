@@ -1,7 +1,8 @@
 import MetricCard from "@/components/dashboard/MetricCard";
 import PerformanceChart from "@/components/dashboard/PerformanceChart";
 import PlatformBreakdown from "@/components/dashboard/PlatformBreakdown";
-import CampaignTable, { buildCampaignRows } from "@/components/dashboard/CampaignTable";
+import CampaignTable from "@/components/dashboard/CampaignTable";
+import { buildCampaignRows } from "@/lib/campaign-utils";
 import InsightPanel from "@/components/dashboard/InsightPanel";
 import SyncStatusBadge from "@/components/dashboard/SyncStatusBadge";
 import {

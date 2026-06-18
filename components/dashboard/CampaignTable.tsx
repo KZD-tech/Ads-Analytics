@@ -2,27 +2,12 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import type {
-  AdCampaign,
-  AdDailyMetric,
-  Platform,
-} from "@/types/ads";
-import { aggregateMetrics, formatMYR, formatNumber, formatPercent } from "@/lib/metrics";
+import { formatMYR, formatNumber, formatPercent } from "@/lib/metrics";
+import type { CampaignRow } from "@/lib/campaign-utils";
 import clsx from "clsx";
 import { ChevronDown, ChevronUp, ExternalLink } from "lucide-react";
 
 type SortKey = "spend" | "ctr" | "roas" | "conversions" | "impressions" | "clicks";
-
-interface CampaignRow {
-  campaign: AdCampaign;
-  platform_name: Platform;
-  spend: number;
-  impressions: number;
-  clicks: number;
-  ctr: number;
-  roas: number;
-  conversions: number;
-}
 
 interface CampaignTableProps {
   rows: CampaignRow[];
@@ -212,23 +197,4 @@ export default function CampaignTable({
       </table>
     </div>
   );
-}
-
-// Helper to build rows from queries
-export function buildCampaignRows(
-  campaigns: (AdCampaign & { platform_name?: Platform; metrics?: AdDailyMetric[] })[],
-): CampaignRow[] {
-  return campaigns.map((c) => {
-    const agg = aggregateMetrics(c.metrics || []);
-    return {
-      campaign: c,
-      platform_name: c.platform_name || "meta",
-      spend: agg.spend,
-      impressions: agg.impressions,
-      clicks: agg.clicks,
-      ctr: agg.ctr,
-      roas: agg.roas,
-      conversions: agg.conversions,
-    };
-  });
 }
