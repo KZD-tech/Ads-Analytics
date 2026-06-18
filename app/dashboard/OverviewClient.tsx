@@ -34,18 +34,19 @@ export default async function OverviewClient({
   prevFrom: string;
   prevTo: string;
 }) {
-  // Fetch current + previous period data
-  const [campaigns, prevCampaigns, lastSync] = await Promise.all([
-    getCampaignsWithMetrics(from, to),
-    getCampaignsWithMetrics(prevFrom, prevTo),
-    getLastSync(),
-  ]);
+  try {
+    // Fetch current + previous period data
+    const [campaigns, prevCampaigns, lastSync] = await Promise.all([
+      getCampaignsWithMetrics(from, to),
+      getCampaignsWithMetrics(prevFrom, prevTo),
+      getLastSync(),
+    ]);
 
-  console.log("[dashboard/overview] Data loaded:", {
-    campaignsCount: campaigns.length,
-    prevCampaignsCount: prevCampaigns.length,
-    hasLastSync: !!lastSync,
-  });
+    console.log("[dashboard/overview] Data loaded:", {
+      campaignsCount: campaigns.length,
+      prevCampaignsCount: prevCampaigns.length,
+      hasLastSync: !!lastSync,
+    });
 
   const totals = getCampaignAggregates(campaigns);
   const prevTotals = getCampaignAggregates(prevCampaigns);
@@ -189,4 +190,24 @@ export default async function OverviewClient({
       </div>
     </div>
   );
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    const stack = err instanceof Error ? err.stack : "";
+    return (
+      <div className="p-8">
+        <div className="rounded-xl border border-danger/30 bg-danger/10 p-6 max-w-2xl">
+          <h2 className="text-lg font-bold text-danger mb-2">
+            Debug: OverviewClient Error
+          </h2>
+          <p className="text-sm text-text-primary mb-4 font-mono break-all">{message}</p>
+          {stack && (
+            <details className="text-xs text-text-secondary">
+              <summary className="cursor-pointer mb-2">Stack trace</summary>
+              <pre className="whitespace-pre-wrap break-all text-xs">{stack}</pre>
+            </details>
+          )}
+        </div>
+      </div>
+    );
+  }
 }
