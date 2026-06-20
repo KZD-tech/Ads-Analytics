@@ -23,6 +23,7 @@ export interface AdCampaign {
   campaign_name: string;
   status: CampaignStatus;
   objective: CampaignObjective;
+  group_id: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -124,4 +125,30 @@ export interface N8nWebhookPayload {
     conversions: number;
     revenue: number;
   }[];
+}
+
+// ============================================================
+// Campaign Groups (Kempen Teras)
+// ============================================================
+export interface AdCampaignGroup {
+  id: string;
+  group_name: string;
+  description: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CampaignGroupWithAggregates extends AdCampaignGroup {
+  campaign_count: number;
+  total_spend: number;
+  total_impressions: number;
+  total_clicks: number;
+  total_conversions: number;
+  total_revenue: number;
+  avg_ctr: number;
+  avg_roas: number;
+}
+
+export interface CampaignGroupWithCampaigns extends AdCampaignGroup {
+  campaigns: CampaignWithMetrics[];
 }

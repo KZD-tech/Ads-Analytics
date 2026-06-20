@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase-browser";
 import {
   LayoutDashboard,
   Megaphone,
+  FolderOpen,
   Facebook,
   Chrome,
   GitCompare,
@@ -19,6 +20,7 @@ import clsx from "clsx";
 const navItems = [
   { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
   { href: "/dashboard/campaigns", label: "Kempen", icon: Megaphone },
+  { href: "/dashboard/campaign-groups", label: "Kempen Teras", icon: FolderOpen },
   { href: "/dashboard/meta", label: "Meta Ads", icon: Facebook },
   { href: "/dashboard/google", label: "Google Ads", icon: Chrome },
   { href: "/dashboard/compare", label: "Bandingan", icon: GitCompare },

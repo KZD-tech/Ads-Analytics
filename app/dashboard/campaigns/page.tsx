@@ -1,7 +1,9 @@
 import { getCampaignsWithMetrics, getDefaultDateRange } from "@/lib/dashboard-data";
-import CampaignTable from "@/components/dashboard/CampaignTable";
+import { getCampaignGroups } from "@/lib/campaign-groups";
 import { buildCampaignRows } from "@/lib/campaign-utils";
 import CampaignFilters from "./CampaignFilters";
+import CampaignsTableWithAssign from "./CampaignsTableWithAssign";
+import type { AdCampaignGroup } from "@/types/ads";
 
 export default async function CampaignsPage({
   searchParams,
@@ -19,12 +21,27 @@ export default async function CampaignsPage({
   const platform = searchParams.platform as "meta" | "google" | undefined;
   const status = searchParams.status as "active" | "paused" | "archived" | undefined;
 
-  const campaigns = await getCampaignsWithMetrics(from, to, platform);
+  const [campaigns, groups] = await Promise.all([
+    getCampaignsWithMetrics(from, to, platform),
+    getCampaignGroups(),
+  ]);
   let rows = buildCampaignRows(campaigns);
 
   if (status) {
     rows = rows.filter((r) => r.campaign.status === status);
   }
+
+  const groupMap: Record<string, string> = {};
+  for (const g of groups as AdCampaignGroup[]) {
+    groupMap[g.id] = g.group_name;
+  }
+
+  const campaignsWithGroup = campaigns.map((c) => ({
+    campaign_id: c.id,
+    campaign_name: c.campaign_name,
+    group_id: c.group_id ?? null,
+    group_name: c.group_id ? groupMap[c.group_id] : undefined,
+  }));
 
   return (
     <div className="space-y-6">
@@ -42,7 +59,11 @@ export default async function CampaignsPage({
         currentStatus={status}
       />
 
-      <CampaignTable rows={rows} />
+      <CampaignsTableWithAssign
+        rows={rows}
+        groups={groups}
+        campaigns={campaignsWithGroup}
+      />
     </div>
   );
 }
